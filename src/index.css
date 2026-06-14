@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------------------
+ * Token fallbacks
+ * ---------------------------------------------------------------------------
+ * ThemeModeProvider writes these CSS variables onto <html> at runtime. The
+ * values below are static fallbacks (matching tokens.ts) so the very first
+ * paint — before React mounts — already has the right colors and avoids a
+ * flash of unstyled content. Keep these in sync with src/theme/tokens.ts.
+ * ------------------------------------------------------------------------ */
+:root {
+  --color-primary: #7c3aed;
+  --color-primary-light: #9d5cf5;
+  --color-primary-dark: #5b21b6;
+  --color-secondary: #ec4899;
+  --color-background: #f7f7fb;
+  --color-paper: #ffffff;
+  --color-foreground: #1a1523;
+  --color-muted: #6b6375;
+  --color-border: #e5e4e7;
+}
+
+:root[data-theme="dark"] {
+  --color-primary: #a78bfa;
+  --color-primary-light: #c4b5fd;
+  --color-primary-dark: #7c3aed;
+  --color-secondary: #f472b6;
+  --color-background: #0f1116;
+  --color-paper: #16181f;
+  --color-foreground: #f3f4f6;
+  --color-muted: #9ca3af;
+  --color-border: #2e303a;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  min-height: 100svh;
+}
