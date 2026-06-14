@@ -9,8 +9,8 @@ Motion). Features are built and documented one at a time.
 | # | Feature | Doc | Status |
 | - | ------- | --- | ------ |
 | 1 | Theme system (MUI light/dark, shared Tailwind tokens, toggle) | [01-theme-system.md](./01-theme-system.md) | ✅ Done |
-| 2 | Layout (Navbar, Footer, layouts, protected routes) | — | ⏳ Next |
-| 3 | Auth (register/login/forgot/reset/verify, authSlice) | — | ⏳ |
+| 2 | Layout (Navbar, Footer, layouts, guards, routing, transitions) | [02-layout.md](./02-layout.md) | ✅ Done |
+| 3 | Auth (register/login/forgot/reset/verify, authSlice) | — | ⏳ Next |
 | 4 | Home (hero, featured, categories, banners, newsletter) | — | ⏳ |
 | 5 | Product (listing + filters, product detail) | — | ⏳ |
 | 6 | Cart | — | ⏳ |

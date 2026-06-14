@@ -1,10 +1,14 @@
 import { configureStore } from "@reduxjs/toolkit";
+import authReducer from "../features/auth/authSlice";
+import cartReducer from "../features/cart/cartSlice";
+import wishlistReducer from "../features/wishlist/wishlistSlice";
 
 export const store = configureStore({
   reducer: {
-    // slices will be added here module by module
-    // auth: authReducer,
-    // cart: cartReducer,
+    // Global UI state only — server data lives in TanStack Query.
+    auth: authReducer,
+    cart: cartReducer, // Navbar badge for now; full cart in Feature 6
+    wishlist: wishlistReducer, // Navbar badge for now; full wishlist in Feature 9
   },
 });
 
