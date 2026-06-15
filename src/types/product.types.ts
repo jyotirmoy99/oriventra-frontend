@@ -75,6 +75,7 @@ export interface ProductListParams {
   maxPrice?: number;
   inStock?: boolean;
   isFeatured?: boolean;
+  minRating?: number; // average rating ≥ this value
   sort?: ProductSort;
   page?: number;
   limit?: number;
