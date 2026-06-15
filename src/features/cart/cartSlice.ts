@@ -27,10 +27,14 @@ const cartSlice = createSlice({
     setCartCount(state, action: PayloadAction<number>) {
       state.totalQuantity = Math.max(0, action.payload);
     },
+    /** Bump the badge by N (defaults to 1) — used by add-to-cart. */
+    incrementCartCount(state, action: PayloadAction<number | undefined>) {
+      state.totalQuantity = Math.max(0, state.totalQuantity + (action.payload ?? 1));
+    },
   },
 });
 
-export const { setCartCount } = cartSlice.actions;
+export const { setCartCount, incrementCartCount } = cartSlice.actions;
 
 export const selectCartCount = (state: RootState): number =>
   state.cart.totalQuantity;
