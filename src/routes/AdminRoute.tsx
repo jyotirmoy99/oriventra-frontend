@@ -1,6 +1,7 @@
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { useAppSelector } from "../hooks/useAppSelector";
 import { selectAuth } from "../features/auth/authSlice";
+import { isAdminRole } from "../types";
 import FullScreenLoader from "../components/common/FullScreenLoader";
 import { PATHS } from "./paths";
 
@@ -22,8 +23,8 @@ const AdminRoute = () => {
     return <Navigate to={PATHS.login} state={{ from: location }} replace />;
   }
 
-  // Signed in but not an admin — deny by sending home.
-  if (user?.role !== "admin") {
+  // Signed in but not an admin/superadmin — deny by sending home.
+  if (!isAdminRole(user?.role)) {
     return <Navigate to={PATHS.home} replace />;
   }
 

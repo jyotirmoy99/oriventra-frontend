@@ -14,9 +14,10 @@ import PersonRoundedIcon from "@mui/icons-material/PersonRounded";
 import ReceiptLongRoundedIcon from "@mui/icons-material/ReceiptLongRounded";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import LogoutRoundedIcon from "@mui/icons-material/LogoutRounded";
-import { useAppDispatch } from "../../hooks/useAppDispatch";
 import { useAppSelector } from "../../hooks/useAppSelector";
-import { logout, selectAuth } from "../../features/auth/authSlice";
+import { selectAuth } from "../../features/auth/authSlice";
+import { useLogout } from "../../hooks/useAuthActions";
+import { isAdminRole } from "../../types";
 import { PATHS } from "../../routes/paths";
 
 // ---------------------------------------------------------------------------
@@ -29,8 +30,8 @@ import { PATHS } from "../../routes/paths";
 
 const UserMenu = () => {
   const { isAuthenticated, user } = useAppSelector(selectAuth);
-  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const logout = useLogout();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
 
@@ -39,8 +40,8 @@ const UserMenu = () => {
 
   const handleLogout = () => {
     handleClose();
-    dispatch(logout());
-    navigate(PATHS.home);
+    // Clears the server cookies; the hook clears local auth state + query cache.
+    logout.mutate(undefined, { onSuccess: () => navigate(PATHS.home) });
   };
 
   // --- Signed out: show auth actions ---------------------------------------
@@ -68,7 +69,7 @@ const UserMenu = () => {
       <Tooltip title="Account">
         <IconButton onClick={handleOpen} size="small" aria-label="Open account menu">
           <Avatar
-            src={user?.avatar}
+            src={user?.avatar?.url}
             alt={user?.name}
             sx={{ width: 34, height: 34, bgcolor: "primary.main", fontSize: 15 }}
           >
@@ -111,7 +112,7 @@ const UserMenu = () => {
           My Orders
         </MenuItem>
 
-        {user?.role === "admin" && (
+        {isAdminRole(user?.role) && (
           <MenuItem component={RouterLink} to={PATHS.admin}>
             <ListItemIcon>
               <DashboardRoundedIcon fontSize="small" />

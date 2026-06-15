@@ -9,6 +9,10 @@ import {
   HomePage,
   NotFoundPage,
   LoginPage,
+  RegisterPage,
+  ForgotPasswordPage,
+  ResetPasswordPage,
+  VerifyEmailPage,
   ProfilePage,
   DashboardPage,
 } from "./lazyPages";
@@ -53,7 +57,10 @@ const router = createBrowserRouter([
     errorElement: <RouteError />,
     children: [
       { path: "login", element: <LoginPage /> },
-      // register, forgot-password, reset-password, verify-email → Feature 3
+      { path: "register", element: <RegisterPage /> },
+      { path: "forgot-password", element: <ForgotPasswordPage /> },
+      { path: "reset-password", element: <ResetPasswordPage /> },
+      { path: "verify-email", element: <VerifyEmailPage /> },
     ],
   },
 
