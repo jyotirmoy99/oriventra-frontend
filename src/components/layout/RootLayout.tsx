@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ErrorBoundary from "../common/ErrorBoundary";
 import AnimatedOutlet from "../common/AnimatedOutlet";
+import EmailVerificationBanner from "../auth/EmailVerificationBanner";
 
 // ---------------------------------------------------------------------------
 // RootLayout
@@ -24,6 +25,8 @@ const RootLayout = () => {
       }}
     >
       <Navbar />
+      {/* Nudge signed-in, unverified users to confirm their email */}
+      <EmailVerificationBanner />
       <Box component="main" sx={{ flex: 1, display: "flex", flexDirection: "column" }}>
         <ErrorBoundary>
           <AnimatedOutlet />
