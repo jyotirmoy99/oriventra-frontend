@@ -11,7 +11,8 @@ import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import CheckCircleRoundedIcon from "@mui/icons-material/CheckCircleRounded";
 import { useOrder } from "../../hooks/useOrders";
-import { formatCurrency } from "../../utils/formatCurrency";
+import OrderItems from "../../components/order/OrderItems";
+import OrderTotals from "../../components/order/OrderTotals";
 import { PATHS } from "../../routes/paths";
 import type { PaymentStatus } from "../../types/order.types";
 
@@ -90,35 +91,13 @@ const OrderSuccessPage = () => {
         </Stack>
 
         {/* Items */}
-        <Stack spacing={1.5} sx={{ mb: 2 }}>
-          {order.items.map((item, i) => (
-            <Box key={i} sx={{ display: "flex", justifyContent: "space-between", gap: 1 }}>
-              <Typography variant="body2" sx={{ minWidth: 0 }}>
-                {item.name}
-                {item.variant?.size || item.variant?.color
-                  ? ` (${[item.variant?.size, item.variant?.color].filter(Boolean).join(" / ")})`
-                  : ""}{" "}
-                × {item.quantity}
-              </Typography>
-              <Typography variant="body2" sx={{ fontWeight: 600, whiteSpace: "nowrap" }}>
-                {formatCurrency(item.lineTotal)}
-              </Typography>
-            </Box>
-          ))}
-        </Stack>
+        <Box sx={{ mb: 2 }}>
+          <OrderItems items={order.items} />
+        </Box>
 
         <Divider sx={{ mb: 2 }} />
 
-        <Stack spacing={1}>
-          <Line label="Subtotal" value={formatCurrency(order.subtotal)} />
-          <Line label="Shipping" value={order.shippingFee === 0 ? "Free" : formatCurrency(order.shippingFee)} />
-          {order.taxAmount > 0 && <Line label="Tax" value={formatCurrency(order.taxAmount)} />}
-          {order.discountAmount > 0 && (
-            <Line label={`Discount${order.couponCode ? ` (${order.couponCode})` : ""}`} value={`−${formatCurrency(order.discountAmount)}`} />
-          )}
-          <Divider />
-          <Line label="Total" value={formatCurrency(order.totalAmount)} bold />
-        </Stack>
+        <OrderTotals order={order} />
 
         <Divider sx={{ my: 2 }} />
 
@@ -145,16 +124,5 @@ const OrderSuccessPage = () => {
     </Container>
   );
 };
-
-const Line = ({ label, value, bold }: { label: string; value: string; bold?: boolean }) => (
-  <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "baseline" }}>
-    <Typography variant={bold ? "subtitle1" : "body2"} color={bold ? "text.primary" : "text.secondary"} sx={{ fontWeight: bold ? 700 : 400 }}>
-      {label}
-    </Typography>
-    <Typography variant={bold ? "h6" : "body2"} sx={{ fontWeight: bold ? 800 : 600 }}>
-      {value}
-    </Typography>
-  </Box>
-);
 
 export default OrderSuccessPage;

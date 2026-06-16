@@ -15,8 +15,8 @@ Motion). Features are built and documented one at a time.
 | 5 | Product (listing + filters, product detail) | [05-product.md](./05-product.md) | ✅ Done |
 | 6 | Cart (dual guest/server cart, drawer + page, merge on login) | [06-cart.md](./06-cart.md) | ✅ Done |
 | 7 | Checkout (multi-step, address book, Stripe hosted Checkout + COD) | [07-checkout.md](./07-checkout.md) | ✅ Done |
-| 8 | Orders | — | ⏳ Next |
-| 9 | User profile (info, avatar, addresses, wishlist) | — | ⏳ |
+| 8 | Orders (history list + detail with animated status timeline) | [08-orders.md](./08-orders.md) | ✅ Done |
+| 9 | User profile (info, avatar, addresses, wishlist) | — | ⏳ Next |
 | 10 | Reviews | — | ⏳ |
 | 11 | Admin dashboard | — | ⏳ |
 

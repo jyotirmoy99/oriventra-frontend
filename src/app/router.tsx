@@ -21,6 +21,8 @@ import {
   CheckoutPage,
   OrderSuccessPage,
   OrderCancelPage,
+  OrderListPage,
+  OrderDetailPage,
 } from "./lazyPages";
 
 // ---------------------------------------------------------------------------
@@ -58,6 +60,8 @@ const router = createBrowserRouter([
           { path: "checkout", element: <CheckoutPage /> },
           { path: "order/success", element: <OrderSuccessPage /> },
           { path: "order/cancel", element: <OrderCancelPage /> },
+          { path: "orders", element: <OrderListPage /> },
+          { path: "orders/:id", element: <OrderDetailPage /> },
           { path: "profile", element: <ProfilePage /> },
         ],
       },

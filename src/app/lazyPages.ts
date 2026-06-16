@@ -26,6 +26,10 @@ export const CheckoutPage = lazy(() => import("../pages/checkout/CheckoutPage"))
 export const OrderSuccessPage = lazy(() => import("../pages/orders/OrderSuccessPage"));
 export const OrderCancelPage = lazy(() => import("../pages/orders/OrderCancelPage"));
 
+// Orders (history + detail)
+export const OrderListPage = lazy(() => import("../pages/orders/OrderListPage"));
+export const OrderDetailPage = lazy(() => import("../pages/orders/OrderDetailPage"));
+
 // Auth pages
 export const LoginPage = lazy(() => import("../pages/auth/LoginPage"));
 export const RegisterPage = lazy(() => import("../pages/auth/RegisterPage"));
