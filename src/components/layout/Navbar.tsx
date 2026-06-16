@@ -15,7 +15,8 @@ import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import { useAppSelector } from "../../hooks/useAppSelector";
-import { selectCartCount } from "../../features/cart/cartSlice";
+import { useCartCount } from "../../hooks/useCart";
+import { useCartDrawer } from "../../store/useCartDrawer";
 import { selectWishlistCount } from "../../features/wishlist/wishlistSlice";
 import { brandGradient } from "../../theme/tokens";
 import { PATHS } from "../../routes/paths";
@@ -40,8 +41,9 @@ const Navbar = () => {
   const { pathname } = useLocation();
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const cartCount = useAppSelector(selectCartCount);
+  const cartCount = useCartCount();
   const wishlistCount = useAppSelector(selectWishlistCount);
+  const openCartDrawer = useCartDrawer((s) => s.openDrawer);
 
   return (
     <>
@@ -140,8 +142,7 @@ const Navbar = () => {
 
               <Tooltip title="Cart">
                 <IconButton
-                  component={RouterLink}
-                  to={PATHS.cart}
+                  onClick={openCartDrawer}
                   color="inherit"
                   aria-label={`Cart, ${cartCount} items`}
                 >

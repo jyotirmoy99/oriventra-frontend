@@ -1,6 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch } from "./useAppDispatch";
 import { clearAuth, setUser } from "../features/auth/authSlice";
+import { mergeGuestCart } from "../features/cart/mergeGuestCart";
 import * as authService from "../services/auth.service";
 import type {
   LoginPayload,
@@ -17,21 +18,29 @@ import type {
 // `onSuccess` they pass to `.mutate()`.
 // ---------------------------------------------------------------------------
 
-/** Register → store user. */
+/** Register → store user + merge any guest cart. */
 export function useRegister() {
   const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (payload: RegisterPayload) => authService.register(payload),
-    onSuccess: (user) => dispatch(setUser(user)),
+    onSuccess: async (user) => {
+      dispatch(setUser(user));
+      await mergeGuestCart(queryClient);
+    },
   });
 }
 
-/** Login → store user. */
+/** Login → store user + merge any guest cart. */
 export function useLogin() {
   const dispatch = useAppDispatch();
+  const queryClient = useQueryClient();
   return useMutation({
     mutationFn: (payload: LoginPayload) => authService.login(payload),
-    onSuccess: (user) => dispatch(setUser(user)),
+    onSuccess: async (user) => {
+      dispatch(setUser(user));
+      await mergeGuestCart(queryClient);
+    },
   });
 }
 

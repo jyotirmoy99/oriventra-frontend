@@ -14,6 +14,13 @@ export const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 export const ProfilePage = lazy(() => import("../pages/ProfilePage"));
 export const DashboardPage = lazy(() => import("../pages/admin/DashboardPage"));
 
+// Product
+export const ProductListPage = lazy(() => import("../pages/products/ProductListPage"));
+export const ProductDetailPage = lazy(() => import("../pages/products/ProductDetailPage"));
+
+// Cart
+export const CartPage = lazy(() => import("../pages/CartPage"));
+
 // Auth pages
 export const LoginPage = lazy(() => import("../pages/auth/LoginPage"));
 export const RegisterPage = lazy(() => import("../pages/auth/RegisterPage"));

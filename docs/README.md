@@ -11,10 +11,10 @@ Motion). Features are built and documented one at a time.
 | 1 | Theme system (MUI light/dark, shared Tailwind tokens, toggle) | [01-theme-system.md](./01-theme-system.md) | ✅ Done |
 | 2 | Layout (Navbar, Footer, layouts, guards, routing, transitions) | [02-layout.md](./02-layout.md) | ✅ Done |
 | 3 | Auth (register/login/forgot/reset/verify, authSlice, cookie sessions) | [03-auth.md](./03-auth.md) | ✅ Done |
-| 4 | Home (hero, featured, categories, banners, newsletter) | — | ⏳ Next |
-| 5 | Product (listing + filters, product detail) | — | ⏳ |
-| 6 | Cart | — | ⏳ |
-| 7 | Checkout (multi-step + Stripe) | — | ⏳ |
+| 4 | Home (hero, featured, categories, banners, newsletter) | [04-home.md](./04-home.md) | ✅ Done |
+| 5 | Product (listing + filters, product detail) | [05-product.md](./05-product.md) | ✅ Done |
+| 6 | Cart (dual guest/server cart, drawer + page, merge on login) | [06-cart.md](./06-cart.md) | ✅ Done |
+| 7 | Checkout (multi-step + Stripe) | — | ⏳ Next |
 | 8 | Orders | — | ⏳ |
 | 9 | User profile (info, avatar, addresses, wishlist) | — | ⏳ |
 | 10 | Reviews | — | ⏳ |

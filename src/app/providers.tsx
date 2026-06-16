@@ -3,6 +3,7 @@ import { Provider } from "react-redux";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { store } from "../store";
 import ThemeModeProvider from "../theme/ThemeModeProvider";
+import SnackbarProvider from "../components/common/SnackbarProvider";
 import AuthInitializer from "../components/auth/AuthInitializer";
 
 const queryClient = new QueryClient({
@@ -20,8 +21,11 @@ const Providers = ({ children }: { children: ReactNode }) => {
       <QueryClientProvider client={queryClient}>
         {/* ThemeModeProvider supplies the MUI theme + CssBaseline to the whole app */}
         <ThemeModeProvider>
-          {/* AuthInitializer restores the session on load + wires 401 handling */}
-          <AuthInitializer>{children}</AuthInitializer>
+          {/* SnackbarProvider exposes the global toast API (useSnackbar) */}
+          <SnackbarProvider>
+            {/* AuthInitializer restores the session on load + wires 401 handling */}
+            <AuthInitializer>{children}</AuthInitializer>
+          </SnackbarProvider>
         </ThemeModeProvider>
       </QueryClientProvider>
     </Provider>

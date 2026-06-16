@@ -15,6 +15,9 @@ import {
   VerifyEmailPage,
   ProfilePage,
   DashboardPage,
+  ProductListPage,
+  ProductDetailPage,
+  CartPage,
 } from "./lazyPages";
 
 // ---------------------------------------------------------------------------
@@ -39,6 +42,11 @@ const router = createBrowserRouter([
     errorElement: <RouteError />,
     children: [
       { index: true, element: <HomePage /> },
+
+      // Catalog
+      { path: "products", element: <ProductListPage /> },
+      { path: "products/:slug", element: <ProductDetailPage /> },
+      { path: "cart", element: <CartPage /> },
 
       // Signed-in-only pages (more added in later features).
       {
