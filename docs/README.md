@@ -13,8 +13,8 @@ Motion). Features are built and documented one at a time.
 | 3 | Auth (register/login/forgot/reset/verify, authSlice, cookie sessions) | [03-auth.md](./03-auth.md) | ✅ Done |
 | 4 | Home (hero, featured, categories, banners, newsletter) | [04-home.md](./04-home.md) | ✅ Done |
 | 5 | Product (listing + filters, product detail) | [05-product.md](./05-product.md) | ✅ Done |
-| 6 | Cart | — | ⏳ Next |
-| 7 | Checkout (multi-step + Stripe) | — | ⏳ |
+| 6 | Cart (dual guest/server cart, drawer + page, merge on login) | [06-cart.md](./06-cart.md) | ✅ Done |
+| 7 | Checkout (multi-step + Stripe) | — | ⏳ Next |
 | 8 | Orders | — | ⏳ |
 | 9 | User profile (info, avatar, addresses, wishlist) | — | ⏳ |
 | 10 | Reviews | — | ⏳ |

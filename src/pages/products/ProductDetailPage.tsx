@@ -16,7 +16,7 @@ import FavoriteRoundedIcon from "@mui/icons-material/FavoriteRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
 import { useProduct } from "../../hooks/useProducts";
-import { useAddToCart } from "../../hooks/useCart";
+import { useCart } from "../../hooks/useCart";
 import { useWishlistToggle } from "../../hooks/useWishlist";
 import ProductGallery from "../../components/product/ProductGallery";
 import VariantSelector from "../../components/product/VariantSelector";
@@ -41,7 +41,7 @@ const ProductDetailPage = () => {
   const { slug = "" } = useParams();
   const { data: product, isLoading, isError } = useProduct(slug);
 
-  const { addToCart } = useAddToCart();
+  const { addToCart } = useCart();
   const { isWishlisted, toggle } = useWishlistToggle(product?._id ?? "");
 
   const [selectedSize, setSelectedSize] = useState<string | undefined>();
@@ -109,8 +109,7 @@ const ProductDetailPage = () => {
   const canAddToCart = inStock && !needsSelection;
 
   const handleAddToCart = () => {
-    // Feature 6 wires the selected variant; for now confirm + bump the badge.
-    addToCart(product, Math.min(quantity, effectiveStock || 1));
+    addToCart(product, selectedVariant, Math.min(quantity, effectiveStock || 1));
   };
 
   return (

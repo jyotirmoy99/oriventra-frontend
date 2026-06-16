@@ -1,5 +1,5 @@
 import { memo, type MouseEvent } from "react";
-import { Link as RouterLink } from "react-router-dom";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
@@ -16,7 +16,7 @@ import AddShoppingCartRoundedIcon from "@mui/icons-material/AddShoppingCartRound
 import ImageNotSupportedRoundedIcon from "@mui/icons-material/ImageNotSupportedRounded";
 import type { Product } from "../../types/product.types";
 import { useWishlistToggle } from "../../hooks/useWishlist";
-import { useAddToCart } from "../../hooks/useCart";
+import { useCart } from "../../hooks/useCart";
 import { formatCurrency, discountPercent } from "../../utils/formatCurrency";
 import { PATHS } from "../../routes/paths";
 
@@ -35,10 +35,12 @@ interface ProductCardProps {
 
 const ProductCard = ({ product }: ProductCardProps) => {
   const { isWishlisted, toggle } = useWishlistToggle(product._id);
-  const { addToCart } = useAddToCart();
+  const { addToCart } = useCart();
+  const navigate = useNavigate();
 
   const discount = discountPercent(product.price, product.compareAtPrice);
   const cover = product.images[0]?.url;
+  const hasVariants = product.variants.length > 0;
   const outOfStock =
     product.stock <= 0 && product.variants.every((v) => v.stock <= 0);
 
@@ -50,7 +52,9 @@ const ProductCard = ({ product }: ProductCardProps) => {
   const onAddToCart = (e: MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
-    addToCart(product);
+    // Variant products need a size/color choice → send to the detail page.
+    if (hasVariants) navigate(PATHS.productDetail(product.slug));
+    else addToCart(product, undefined, 1);
   };
 
   return (

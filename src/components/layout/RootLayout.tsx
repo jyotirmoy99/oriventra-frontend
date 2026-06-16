@@ -4,6 +4,7 @@ import Footer from "./Footer";
 import ErrorBoundary from "../common/ErrorBoundary";
 import AnimatedOutlet from "../common/AnimatedOutlet";
 import EmailVerificationBanner from "../auth/EmailVerificationBanner";
+import CartDrawer from "../cart/CartDrawer";
 
 // ---------------------------------------------------------------------------
 // RootLayout
@@ -33,6 +34,8 @@ const RootLayout = () => {
         </ErrorBoundary>
       </Box>
       <Footer />
+      {/* Mini-cart slide-over (opened from the Navbar cart icon) */}
+      <CartDrawer />
     </Box>
   );
 };
