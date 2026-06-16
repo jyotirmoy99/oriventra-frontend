@@ -18,6 +18,9 @@ import {
   ProductListPage,
   ProductDetailPage,
   CartPage,
+  CheckoutPage,
+  OrderSuccessPage,
+  OrderCancelPage,
 } from "./lazyPages";
 
 // ---------------------------------------------------------------------------
@@ -51,7 +54,12 @@ const router = createBrowserRouter([
       // Signed-in-only pages (more added in later features).
       {
         element: <PrivateRoute />,
-        children: [{ path: "profile", element: <ProfilePage /> }],
+        children: [
+          { path: "checkout", element: <CheckoutPage /> },
+          { path: "order/success", element: <OrderSuccessPage /> },
+          { path: "order/cancel", element: <OrderCancelPage /> },
+          { path: "profile", element: <ProfilePage /> },
+        ],
       },
 
       // Storefront 404 — keeps the Navbar/Footer chrome.
