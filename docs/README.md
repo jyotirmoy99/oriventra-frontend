@@ -20,6 +20,10 @@ Motion). Features are built and documented one at a time.
 | 10 | Reviews (write: add/edit/delete with star rating) | [10-reviews.md](./10-reviews.md) | ✅ Done |
 | 11 | Admin dashboard (stats, recharts chart, manage products/orders/users) | [11-admin.md](./11-admin.md) | ✅ Done |
 
+## Operations
+
+- [Deployment & CI/CD (Vercel)](./deployment.md) — auto-deploy on merge to `main`, GitHub Actions gate, env vars, SPA rewrite, Dockerfile FAQ.
+
 ## Conventions (enforced across all features)
 
 - API calls → `src/services/[module].service.ts` (shared `axiosInstance`).
