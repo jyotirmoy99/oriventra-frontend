@@ -18,7 +18,7 @@ Motion). Features are built and documented one at a time.
 | 8 | Orders (history list + detail with animated status timeline) | [08-orders.md](./08-orders.md) | ✅ Done |
 | 9 | User profile (info, avatar, addresses) + server-synced wishlist | [09-profile.md](./09-profile.md) | ✅ Done |
 | 10 | Reviews (write: add/edit/delete with star rating) | [10-reviews.md](./10-reviews.md) | ✅ Done |
-| 11 | Admin dashboard | — | ⏳ Next |
+| 11 | Admin dashboard (stats, recharts chart, manage products/orders/users) | [11-admin.md](./11-admin.md) | ✅ Done |
 
 ## Conventions (enforced across all features)
 

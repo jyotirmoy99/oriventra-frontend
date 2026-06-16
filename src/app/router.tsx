@@ -24,6 +24,9 @@ import {
   OrderCancelPage,
   OrderListPage,
   OrderDetailPage,
+  AdminProductsPage,
+  AdminOrdersPage,
+  AdminUsersPage,
 } from "./lazyPages";
 
 // ---------------------------------------------------------------------------
@@ -95,7 +98,9 @@ const router = createBrowserRouter([
         errorElement: <RouteError />,
         children: [
           { path: "admin", element: <DashboardPage /> },
-          // admin/products, admin/orders, admin/users → Feature 11
+          { path: "admin/products", element: <AdminProductsPage /> },
+          { path: "admin/orders", element: <AdminOrdersPage /> },
+          { path: "admin/users", element: <AdminUsersPage /> },
         ],
       },
     ],
