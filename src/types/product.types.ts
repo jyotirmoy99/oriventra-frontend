@@ -94,3 +94,18 @@ export interface ProductListResult {
   products: Product[];
   pagination: Pagination;
 }
+
+/** Create/update payload (admin). Variants are managed separately. */
+export interface ProductInput {
+  name: string;
+  description: string;
+  brand?: string;
+  category: string; // category id
+  tags?: string[];
+  price: number;
+  compareAtPrice?: number;
+  stock: number;
+  sku?: string;
+  isActive?: boolean;
+  isFeatured?: boolean;
+}

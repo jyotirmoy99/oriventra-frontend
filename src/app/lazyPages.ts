@@ -12,7 +12,12 @@ import { lazy } from "react";
 export const HomePage = lazy(() => import("../pages/HomePage"));
 export const NotFoundPage = lazy(() => import("../pages/NotFoundPage"));
 export const ProfilePage = lazy(() => import("../pages/ProfilePage"));
+
+// Admin
 export const DashboardPage = lazy(() => import("../pages/admin/DashboardPage"));
+export const AdminProductsPage = lazy(() => import("../pages/admin/AdminProductsPage"));
+export const AdminOrdersPage = lazy(() => import("../pages/admin/AdminOrdersPage"));
+export const AdminUsersPage = lazy(() => import("../pages/admin/AdminUsersPage"));
 
 // Product
 export const ProductListPage = lazy(() => import("../pages/products/ProductListPage"));
