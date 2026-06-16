@@ -32,19 +32,22 @@ export function useCheckout() {
     setIsSubmitting(true);
     try {
       const order = await orderService.placeOrder(payload);
-
-      // The cart was emptied server-side; drop any cached order lists.
-      queryClient.setQueryData(cartKeys.cart, undefined);
-      queryClient.invalidateQueries({ queryKey: cartKeys.cart });
       queryClient.invalidateQueries({ queryKey: orderKeys.lists() });
 
       if (payload.paymentMethod === "stripe") {
+        // Create the session and redirect BEFORE touching the cart cache.
+        // Clearing it here would flash the empty-cart state on the checkout
+        // page while the (async) session request is in flight. The cart is
+        // emptied server-side; returning from Stripe is a fresh page load that
+        // refetches everything.
         const session = await paymentService.createCheckout(order._id);
-        await redirectToCheckout(session); // leaves the SPA
-        return; // keep isSubmitting true while the browser navigates
+        await redirectToCheckout(session); // leaves the SPA; keep isSubmitting true
+        return;
       }
 
-      // Cash on delivery — order is placed; go to confirmation.
+      // Cash on delivery — order placed, cart emptied server-side. Drop the
+      // cached cart so the badge/cart page reflect it, then confirm.
+      queryClient.removeQueries({ queryKey: cartKeys.cart });
       navigate(`${PATHS.orderSuccess}?orderId=${order._id}`);
     } catch (err) {
       setError(getErrorMessage(err));

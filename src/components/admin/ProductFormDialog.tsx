@@ -91,7 +91,13 @@ const ProductFormDialog = ({ open, onClose, product }: ProductFormDialogProps) =
     if (isEdit && product) {
       updateProduct.mutate(
         { id: product._id, payload },
-        { onSuccess: () => notify("Product updated", "success"), onError },
+        {
+          onSuccess: () => {
+            notify("Product updated", "success");
+            onClose();
+          },
+          onError,
+        },
       );
     } else {
       createProduct.mutate(payload, {
