@@ -1,8 +1,12 @@
 import axiosInstance from "../utils/axiosInstance";
 import type { ApiResponse } from "../types";
 import type {
+  CreateReviewPayload,
+  MyReview,
+  Review,
   ReviewListResult,
   ReviewQueryParams,
+  UpdateReviewPayload,
 } from "../types/review.types";
 
 // ---------------------------------------------------------------------------
@@ -23,4 +27,41 @@ export async function listProductReviews(
     { params },
   );
   return data.data!;
+}
+
+/** GET /reviews/me — the current user's reviews (product populated). */
+export async function listMyReviews(): Promise<MyReview[]> {
+  const { data } = await axiosInstance.get<ApiResponse<{ reviews: MyReview[] }>>(
+    "/reviews/me",
+  );
+  return data.data!.reviews;
+}
+
+/** POST /reviews/product/:productId — create a review (one per user/product). */
+export async function createReview(
+  productId: string,
+  payload: CreateReviewPayload,
+): Promise<Review> {
+  const { data } = await axiosInstance.post<ApiResponse<{ review: Review }>>(
+    `/reviews/product/${productId}`,
+    payload,
+  );
+  return data.data!.review;
+}
+
+/** PATCH /reviews/:reviewId — edit your review. */
+export async function updateReview(
+  reviewId: string,
+  payload: UpdateReviewPayload,
+): Promise<Review> {
+  const { data } = await axiosInstance.patch<ApiResponse<{ review: Review }>>(
+    `/reviews/${reviewId}`,
+    payload,
+  );
+  return data.data!.review;
+}
+
+/** DELETE /reviews/:reviewId — delete your review. */
+export async function deleteReview(reviewId: string): Promise<void> {
+  await axiosInstance.delete(`/reviews/${reviewId}`);
 }

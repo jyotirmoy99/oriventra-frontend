@@ -11,13 +11,18 @@ import Stack from "@mui/material/Stack";
 import TextField from "@mui/material/TextField";
 import Typography from "@mui/material/Typography";
 import { useProductReviews } from "../../hooks/useReviews";
+import { useAppSelector } from "../../hooks/useAppSelector";
+import { selectCurrentUser } from "../../features/auth/authSlice";
+import ReviewComposer from "./ReviewComposer";
 import type { Review, ReviewSort } from "../../types/review.types";
 
 // ---------------------------------------------------------------------------
-// ReviewsSection  (read-only — write/edit/delete arrive in Feature 10)
+// ReviewsSection
 // ---------------------------------------------------------------------------
-// Rating summary + sortable, paginated review list for a product. Takes the
-// product's _id (the reviews endpoint requires it).
+// Rating summary, a write surface (ReviewComposer), and a sortable, paginated
+// review list. Takes the product's _id (the reviews endpoint requires it). The
+// signed-in user's own review is shown in the composer, so it's filtered out of
+// the list to avoid duplication.
 // ---------------------------------------------------------------------------
 
 const PAGE_SIZE = 5;
@@ -75,8 +80,11 @@ const ReviewsSection = ({ productId }: ReviewsSectionProps) => {
     limit: PAGE_SIZE,
   });
 
+  const currentUser = useAppSelector(selectCurrentUser);
   const summary = data?.summary;
-  const reviews = data?.reviews ?? [];
+  const allReviews = data?.reviews ?? [];
+  // The user's own review lives in the composer above — hide it from the list.
+  const reviews = allReviews.filter((r) => r.user._id !== currentUser?._id);
   const pagination = data?.pagination;
 
   return (
@@ -124,7 +132,9 @@ const ReviewsSection = ({ productId }: ReviewsSectionProps) => {
         )}
       </Stack>
 
-      <Divider />
+      <Divider sx={{ mb: 2 }} />
+
+      <ReviewComposer productId={productId} />
 
       {isError ? (
         <Alert severity="error" sx={{ mt: 2 }}>
@@ -136,7 +146,9 @@ const ReviewsSection = ({ productId }: ReviewsSectionProps) => {
         </Box>
       ) : reviews.length === 0 ? (
         <Typography color="text.secondary" sx={{ py: 4, textAlign: "center" }}>
-          No reviews yet — be the first to share your thoughts.
+          {(summary?.ratingCount ?? 0) > 0
+            ? "No other reviews yet."
+            : "No reviews yet — be the first to share your thoughts."}
         </Typography>
       ) : (
         <Stack divider={<Divider />}>
