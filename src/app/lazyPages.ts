@@ -18,8 +18,9 @@ export const DashboardPage = lazy(() => import("../pages/admin/DashboardPage"));
 export const ProductListPage = lazy(() => import("../pages/products/ProductListPage"));
 export const ProductDetailPage = lazy(() => import("../pages/products/ProductDetailPage"));
 
-// Cart
+// Cart & wishlist
 export const CartPage = lazy(() => import("../pages/CartPage"));
+export const WishlistPage = lazy(() => import("../pages/WishlistPage"));
 
 // Checkout & order confirmation
 export const CheckoutPage = lazy(() => import("../pages/checkout/CheckoutPage"));

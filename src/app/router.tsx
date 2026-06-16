@@ -18,6 +18,7 @@ import {
   ProductListPage,
   ProductDetailPage,
   CartPage,
+  WishlistPage,
   CheckoutPage,
   OrderSuccessPage,
   OrderCancelPage,
@@ -52,6 +53,7 @@ const router = createBrowserRouter([
       { path: "products", element: <ProductListPage /> },
       { path: "products/:slug", element: <ProductDetailPage /> },
       { path: "cart", element: <CartPage /> },
+      { path: "wishlist", element: <WishlistPage /> },
 
       // Signed-in-only pages (more added in later features).
       {

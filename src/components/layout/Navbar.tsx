@@ -14,10 +14,9 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import FavoriteBorderRoundedIcon from "@mui/icons-material/FavoriteBorderRounded";
 import ShoppingCartRoundedIcon from "@mui/icons-material/ShoppingCartRounded";
-import { useAppSelector } from "../../hooks/useAppSelector";
 import { useCartCount } from "../../hooks/useCart";
 import { useCartDrawer } from "../../store/useCartDrawer";
-import { selectWishlistCount } from "../../features/wishlist/wishlistSlice";
+import { useWishlistCount } from "../../hooks/useWishlist";
 import { brandGradient } from "../../theme/tokens";
 import { PATHS } from "../../routes/paths";
 import { PRIMARY_NAV } from "./navConfig";
@@ -42,7 +41,7 @@ const Navbar = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   const cartCount = useCartCount();
-  const wishlistCount = useAppSelector(selectWishlistCount);
+  const wishlistCount = useWishlistCount();
   const openCartDrawer = useCartDrawer((s) => s.openDrawer);
 
   return (

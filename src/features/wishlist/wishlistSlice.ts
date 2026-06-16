@@ -1,47 +1,64 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { RootState } from "../../store";
+import type { WishlistItem } from "../../types/wishlist.types";
 
 // ---------------------------------------------------------------------------
-// wishlistSlice  (minimal — Navbar badge + quick membership checks)
+// wishlistSlice  (GUEST wishlist — local, for signed-out shoppers)
 // ---------------------------------------------------------------------------
-// Feature 9 (Wishlist page) builds the full experience with React 19
-// useOptimistic toggles synced to the server. For Feature 2 we keep a set of
-// product IDs so the Navbar badge can show a count and product cards can later
-// check membership cheaply.
+// Signed-in users' wishlists live on the server (React Query, see useWishlist).
+// Guests keep theirs here as product snapshots (so the wishlist page renders
+// without a fetch), persisted to localStorage. On login the guest wishlist is
+// merged into the server wishlist (mergeGuestWishlist) and cleared.
 // ---------------------------------------------------------------------------
 
-interface WishlistState {
-  /** Product IDs currently in the wishlist. */
-  ids: string[];
+export const GUEST_WISHLIST_STORAGE_KEY = "oriventra-guest-wishlist";
+
+function loadGuestWishlist(): WishlistItem[] {
+  try {
+    const raw = localStorage.getItem(GUEST_WISHLIST_STORAGE_KEY);
+    const parsed = raw ? JSON.parse(raw) : [];
+    return Array.isArray(parsed) ? (parsed as WishlistItem[]) : [];
+  } catch {
+    return [];
+  }
 }
 
-const initialState: WishlistState = {
-  ids: [],
-};
+interface WishlistState {
+  items: WishlistItem[];
+}
+
+const initialState: WishlistState = { items: loadGuestWishlist() };
 
 const wishlistSlice = createSlice({
   name: "wishlist",
   initialState,
   reducers: {
-    /** Replace the whole wishlist (e.g. after fetching it from the server). */
-    setWishlist(state, action: PayloadAction<string[]>) {
-      state.ids = action.payload;
+    /** Add if absent, remove if present (the heart toggle). */
+    toggleGuestWishlist(state, action: PayloadAction<WishlistItem>) {
+      const id = action.payload.productId;
+      const exists = state.items.some((i) => i.productId === id);
+      state.items = exists
+        ? state.items.filter((i) => i.productId !== id)
+        : [...state.items, action.payload];
     },
-    /** Add/remove a single product ID. */
-    toggleWishlist(state, action: PayloadAction<string>) {
-      const id = action.payload;
-      state.ids = state.ids.includes(id)
-        ? state.ids.filter((existing) => existing !== id)
-        : [...state.ids, id];
+    removeGuestWishlistItem(state, action: PayloadAction<string>) {
+      state.items = state.items.filter((i) => i.productId !== action.payload);
+    },
+    clearGuestWishlist(state) {
+      state.items = [];
     },
   },
 });
 
-export const { setWishlist, toggleWishlist } = wishlistSlice.actions;
+export const {
+  toggleGuestWishlist,
+  removeGuestWishlistItem,
+  clearGuestWishlist,
+} = wishlistSlice.actions;
 
-export const selectWishlistCount = (state: RootState): number =>
-  state.wishlist.ids.length;
-export const selectWishlistIds = (state: RootState): string[] =>
-  state.wishlist.ids;
+export const selectGuestWishlistItems = (state: RootState): WishlistItem[] =>
+  state.wishlist.items;
+export const selectGuestWishlistCount = (state: RootState): number =>
+  state.wishlist.items.length;
 
 export default wishlistSlice.reducer;
