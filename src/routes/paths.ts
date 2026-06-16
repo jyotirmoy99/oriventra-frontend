@@ -12,6 +12,8 @@ export const PATHS = {
   cart: "/cart",
   wishlist: "/wishlist",
   checkout: "/checkout",
+  orderSuccess: "/order/success", // Stripe success_url + COD confirmation
+  orderCancel: "/order/cancel", // Stripe cancel_url
   orders: "/orders",
   orderDetail: (id: string) => `/orders/${id}`,
   profile: "/profile",
