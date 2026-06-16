@@ -1,5 +1,5 @@
 import type { Avatar } from "./index";
-import type { Pagination } from "./product.types";
+import type { Pagination, ProductImage } from "./product.types";
 
 // ---------------------------------------------------------------------------
 // Review types (mirror the backend review module)
@@ -44,4 +44,31 @@ export interface ReviewListResult {
   reviews: Review[];
   pagination: Pagination;
   summary: ReviewSummary;
+}
+
+// --- Write side ------------------------------------------------------------
+
+export interface CreateReviewPayload {
+  rating: number; // 1..5
+  comment?: string;
+}
+
+export type UpdateReviewPayload = Partial<CreateReviewPayload>;
+
+/** A review from GET /reviews/me — `product` is populated, `user` is the id. */
+export interface MyReviewProduct {
+  _id: string;
+  name: string;
+  slug: string;
+  images: ProductImage[];
+}
+
+export interface MyReview {
+  _id: string;
+  user: string;
+  product: MyReviewProduct;
+  rating: number;
+  comment?: string;
+  createdAt: string;
+  updatedAt: string;
 }

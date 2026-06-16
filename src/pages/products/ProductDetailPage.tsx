@@ -42,7 +42,7 @@ const ProductDetailPage = () => {
   const { data: product, isLoading, isError } = useProduct(slug);
 
   const { addToCart } = useCart();
-  const { isWishlisted, toggle } = useWishlistToggle(product?._id ?? "");
+  const { isWishlisted, toggle } = useWishlistToggle(product);
 
   const [selectedSize, setSelectedSize] = useState<string | undefined>();
   const [selectedColor, setSelectedColor] = useState<string | undefined>();

@@ -34,7 +34,7 @@ interface ProductCardProps {
 }
 
 const ProductCard = ({ product }: ProductCardProps) => {
-  const { isWishlisted, toggle } = useWishlistToggle(product._id);
+  const { isWishlisted, toggle } = useWishlistToggle(product);
   const { addToCart } = useCart();
   const navigate = useNavigate();
 

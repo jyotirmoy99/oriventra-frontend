@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppDispatch } from "./useAppDispatch";
 import { clearAuth, setUser } from "../features/auth/authSlice";
 import { mergeGuestCart } from "../features/cart/mergeGuestCart";
+import { mergeGuestWishlist } from "../features/wishlist/mergeGuestWishlist";
 import * as authService from "../services/auth.service";
 import type {
   LoginPayload,
@@ -26,7 +27,10 @@ export function useRegister() {
     mutationFn: (payload: RegisterPayload) => authService.register(payload),
     onSuccess: async (user) => {
       dispatch(setUser(user));
-      await mergeGuestCart(queryClient);
+      await Promise.all([
+        mergeGuestCart(queryClient),
+        mergeGuestWishlist(queryClient),
+      ]);
     },
   });
 }
@@ -39,7 +43,10 @@ export function useLogin() {
     mutationFn: (payload: LoginPayload) => authService.login(payload),
     onSuccess: async (user) => {
       dispatch(setUser(user));
-      await mergeGuestCart(queryClient);
+      await Promise.all([
+        mergeGuestCart(queryClient),
+        mergeGuestWishlist(queryClient),
+      ]);
     },
   });
 }
