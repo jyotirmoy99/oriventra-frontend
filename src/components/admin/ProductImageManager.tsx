@@ -1,6 +1,7 @@
 import { useRef, useState, type ChangeEvent } from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
+import CircularProgress from "@mui/material/CircularProgress";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import { alpha } from "@mui/material/styles";
@@ -20,6 +21,8 @@ const MAX_BYTES = 5 * 1024 * 1024;
 
 const ProductImageManager = ({ product }: { product: Product }) => {
   const [images, setImages] = useState<ProductImage[]>(product.images);
+  // Track the image currently being removed so we can show a spinner on it.
+  const [removingId, setRemovingId] = useState<string | null>(null);
   const upload = useUploadProductImages();
   const remove = useRemoveProductImage();
   const { notify } = useSnackbar();
@@ -56,11 +59,16 @@ const ProductImageManager = ({ product }: { product: Product }) => {
   };
 
   const onRemove = (publicId: string) => {
+    setRemovingId(publicId);
     remove.mutate(
       { id: product._id, publicId },
       {
-        onSuccess: (updated) => setImages(updated.images),
+        onSuccess: (updated) => {
+          setImages(updated.images);
+          notify("Image removed", "success");
+        },
         onError: (err) => notify(getErrorMessage(err), "error"),
+        onSettled: () => setRemovingId(null),
       },
     );
   };
@@ -71,36 +79,55 @@ const ProductImageManager = ({ product }: { product: Product }) => {
         Images ({images.length}/{MAX_IMAGES})
       </Typography>
       <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-        {images.map((img) => (
-          <Box
-            key={img.publicId}
-            sx={{
-              position: "relative",
-              width: 84,
-              height: 84,
-              borderRadius: 2,
-              overflow: "hidden",
-              border: (t) => `1px solid ${t.palette.divider}`,
-            }}
-          >
-            <Box component="img" src={img.url} alt="" sx={{ width: "100%", height: "100%", objectFit: "cover" }} />
-            <IconButton
-              size="small"
-              onClick={() => onRemove(img.publicId)}
-              disabled={remove.isPending}
-              aria-label="Remove image"
+        {images.map((img) => {
+          const isRemoving = removingId === img.publicId;
+          return (
+            <Box
+              key={img.publicId}
               sx={{
-                position: "absolute",
-                top: 2,
-                right: 2,
-                bgcolor: (t) => alpha(t.palette.background.paper, 0.85),
-                "&:hover": { bgcolor: "background.paper" },
+                position: "relative",
+                width: 84,
+                height: 84,
+                borderRadius: 2,
+                overflow: "hidden",
+                border: (t) => `1px solid ${t.palette.divider}`,
               }}
             >
-              <CloseRoundedIcon sx={{ fontSize: 16 }} />
-            </IconButton>
-          </Box>
-        ))}
+              <Box component="img" src={img.url} alt="" sx={{ width: "100%", height: "100%", objectFit: "cover" }} />
+              <IconButton
+                size="small"
+                onClick={() => onRemove(img.publicId)}
+                disabled={remove.isPending}
+                aria-label="Remove image"
+                sx={{
+                  position: "absolute",
+                  top: 2,
+                  right: 2,
+                  bgcolor: (t) => alpha(t.palette.background.paper, 0.85),
+                  "&:hover": { bgcolor: "background.paper" },
+                }}
+              >
+                <CloseRoundedIcon sx={{ fontSize: 16 }} />
+              </IconButton>
+
+              {/* Loading overlay while this image is being removed */}
+              {isRemoving && (
+                <Box
+                  sx={{
+                    position: "absolute",
+                    inset: 0,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    bgcolor: (t) => alpha(t.palette.background.paper, 0.6),
+                  }}
+                >
+                  <CircularProgress size={22} />
+                </Box>
+              )}
+            </Box>
+          );
+        })}
 
         {images.length < MAX_IMAGES && (
           <Button

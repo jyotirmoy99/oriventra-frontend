@@ -1,11 +1,9 @@
 import { Link as RouterLink } from "react-router-dom";
 import Box from "@mui/material/Box";
-import Card from "@mui/material/Card";
-import CardActionArea from "@mui/material/CardActionArea";
 import Container from "@mui/material/Container";
-import Grid from "@mui/material/Grid";
 import Skeleton from "@mui/material/Skeleton";
 import Typography from "@mui/material/Typography";
+import { alpha } from "@mui/material/styles";
 import CategoryRoundedIcon from "@mui/icons-material/CategoryRounded";
 import type { Category } from "../../types/category.types";
 import { useCategories } from "../../hooks/useCategories";
@@ -15,40 +13,85 @@ import SectionHeading from "./SectionHeading";
 // ---------------------------------------------------------------------------
 // CategoriesSection
 // ---------------------------------------------------------------------------
-// Grid of category tiles linking to the listing filtered by that category.
-// Shows skeletons while loading and hides itself entirely if there are none.
+// Minimalist round "category pill" rail (Myntra/Flipkart style): a circular
+// image/icon with the name beneath it. Links to the listing filtered by that
+// category. Skeletons while loading; hides itself entirely if there are none.
 // ---------------------------------------------------------------------------
 
 // Link to the product listing filtered by category slug.
 const categoryPath = (slug: string) => `/products?category=${encodeURIComponent(slug)}`;
 
-const CategoryTile = ({ category }: { category: Category }) => (
-  <Card sx={{ height: "100%" }}>
-    <CardActionArea component={RouterLink} to={categoryPath(category.slug)} sx={{ height: "100%" }}>
-      <Box
-        sx={{
-          aspectRatio: "4 / 3",
-          backgroundImage: category.image?.url ? `url(${category.image.url})` : undefined,
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          bgcolor: "action.hover",
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        {!category.image?.url && (
-          <CategoryRoundedIcon sx={{ fontSize: 36, color: "text.disabled" }} />
-        )}
-      </Box>
-      <Box sx={{ p: 1.5 }}>
-        <Typography variant="subtitle2" sx={{ fontWeight: 600 }} noWrap>
-          {category.name}
-        </Typography>
-      </Box>
-    </CardActionArea>
-  </Card>
-);
+const PILL = { xs: 76, md: 96 };
+
+const CategoryPill = ({ category }: { category: Category }) => {
+  // The category's accent color drives the empty-state tint, icon, and hover
+  // ring; falls back to the brand primary when no color is set.
+  const accent = category.color;
+  const hasImage = Boolean(category.image?.url);
+
+  return (
+  <Box
+    component={RouterLink}
+    to={categoryPath(category.slug)}
+    sx={{
+      textDecoration: "none",
+      color: "text.primary",
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+      gap: 1,
+      width: PILL,
+      "&:hover .cat-circle": {
+        transform: "translateY(-4px)",
+        borderColor: accent ?? "primary.main",
+        boxShadow: (t) =>
+          `0 12px 24px -14px ${alpha(accent ?? t.palette.primary.main, 0.6)}`,
+      },
+      "&:hover .cat-label": { color: accent ?? "primary.main" },
+    }}
+  >
+    <Box
+      className="cat-circle"
+      sx={{
+        width: PILL,
+        height: PILL,
+        borderRadius: "50%",
+        overflow: "hidden",
+        border: (t) => `1px solid ${t.palette.divider}`,
+        bgcolor: accent && !hasImage ? alpha(accent, 0.12) : "background.paper",
+        backgroundImage: hasImage ? `url(${category.image!.url})` : undefined,
+        backgroundSize: "cover",
+        backgroundPosition: "center",
+        display: "grid",
+        placeItems: "center",
+        transition: "transform .25s ease, box-shadow .25s ease, border-color .25s ease",
+      }}
+    >
+      {!hasImage && (
+        <CategoryRoundedIcon
+          sx={{ fontSize: 30, color: accent ?? "text.disabled" }}
+        />
+      )}
+    </Box>
+    <Typography
+      className="cat-label"
+      variant="caption"
+      sx={{
+        fontWeight: 600,
+        textAlign: "center",
+        lineHeight: 1.25,
+        transition: "color .2s ease",
+        display: "-webkit-box",
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: "vertical",
+        overflow: "hidden",
+      }}
+    >
+      {category.name}
+    </Typography>
+  </Box>
+  );
+};
 
 const CategoriesSection = () => {
   const { data: categories, isLoading, isError } = useCategories();
@@ -66,20 +109,25 @@ const CategoriesSection = () => {
         actionTo={productsSearchPath("")}
       />
 
-      <Grid container spacing={2}>
+      <Box
+        sx={{
+          display: "flex",
+          flexWrap: "wrap",
+          gap: { xs: 2.5, md: 3.5 },
+          justifyContent: { xs: "space-between", sm: "flex-start" },
+        }}
+      >
         {isLoading
-          ? Array.from({ length: 6 }).map((_, i) => (
-              <Grid key={i} size={{ xs: 6, sm: 4, md: 2 }}>
-                <Skeleton variant="rounded" sx={{ aspectRatio: "4 / 3", width: "100%" }} />
-                <Skeleton width="70%" sx={{ mt: 1 }} />
-              </Grid>
+          ? Array.from({ length: 8 }).map((_, i) => (
+              <Box key={i} sx={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 1, width: PILL }}>
+                <Skeleton variant="circular" sx={{ width: PILL, height: PILL }} />
+                <Skeleton width="80%" />
+              </Box>
             ))
           : categories!.slice(0, 12).map((category) => (
-              <Grid key={category._id} size={{ xs: 6, sm: 4, md: 2 }}>
-                <CategoryTile category={category} />
-              </Grid>
+              <CategoryPill key={category._id} category={category} />
             ))}
-      </Grid>
+      </Box>
     </Container>
   );
 };

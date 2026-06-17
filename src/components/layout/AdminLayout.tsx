@@ -17,6 +17,7 @@ import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
 import StorefrontRoundedIcon from "@mui/icons-material/StorefrontRounded";
 import DashboardRoundedIcon from "@mui/icons-material/DashboardRounded";
 import Inventory2RoundedIcon from "@mui/icons-material/Inventory2Rounded";
+import CategoryRoundedIcon from "@mui/icons-material/CategoryRounded";
 import ReceiptLongRoundedIcon from "@mui/icons-material/ReceiptLongRounded";
 import GroupRoundedIcon from "@mui/icons-material/GroupRounded";
 import type { SvgIconComponent } from "@mui/icons-material";
@@ -48,6 +49,7 @@ interface AdminNavItem {
 const ADMIN_NAV: AdminNavItem[] = [
   { label: "Dashboard", to: PATHS.admin, icon: DashboardRoundedIcon, end: true },
   { label: "Products", to: PATHS.adminProducts, icon: Inventory2RoundedIcon },
+  { label: "Categories", to: PATHS.adminCategories, icon: CategoryRoundedIcon },
   { label: "Orders", to: PATHS.adminOrders, icon: ReceiptLongRoundedIcon },
   { label: "Users", to: PATHS.adminUsers, icon: GroupRoundedIcon },
 ];

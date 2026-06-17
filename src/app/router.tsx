@@ -25,6 +25,7 @@ import {
   OrderListPage,
   OrderDetailPage,
   AdminProductsPage,
+  AdminCategoriesPage,
   AdminOrdersPage,
   AdminUsersPage,
 } from "./lazyPages";
@@ -99,6 +100,7 @@ const router = createBrowserRouter([
         children: [
           { path: "admin", element: <DashboardPage /> },
           { path: "admin/products", element: <AdminProductsPage /> },
+          { path: "admin/categories", element: <AdminCategoriesPage /> },
           { path: "admin/orders", element: <AdminOrdersPage /> },
           { path: "admin/users", element: <AdminUsersPage /> },
         ],

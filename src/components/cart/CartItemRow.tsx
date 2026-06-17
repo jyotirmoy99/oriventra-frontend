@@ -21,7 +21,7 @@ import type { CartLine } from "../../types/cart.types";
 
 interface CartItemRowProps {
   line: CartLine;
-  onUpdateQuantity: (line: CartLine, quantity: number) => void;
+  onUpdateQuantity: (line: CartLine, quantity: number) => void | Promise<void>;
   onRemove: (line: CartLine) => void;
   compact?: boolean; // tighter layout for the drawer
 }
@@ -30,10 +30,14 @@ const CartItemRow = ({ line, onUpdateQuantity, onRemove, compact }: CartItemRowP
   const [optimisticQty, setOptimisticQty] = useOptimistic(line.quantity);
   const [, startTransition] = useTransition();
 
+  // Await the update inside the transition so the optimistic quantity stays
+  // pinned until the (server) cart actually reflects it. Without the await the
+  // transition ends immediately and the value snaps back to the stale
+  // line.quantity before the server responds — the visible flicker.
   const changeQty = (quantity: number) => {
-    startTransition(() => {
+    startTransition(async () => {
       setOptimisticQty(quantity);
-      onUpdateQuantity(line, quantity);
+      await onUpdateQuantity(line, quantity);
     });
   };
 

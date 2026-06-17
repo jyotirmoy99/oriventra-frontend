@@ -26,8 +26,8 @@ const FeaturedProducts = () => {
     <Box sx={{ bgcolor: "background.paper" }}>
       <Container maxWidth="lg" sx={{ py: { xs: 5, md: 8 } }}>
         <SectionHeading
-          title="Featured products"
-          subtitle="Hand-picked favourites our customers love"
+          title="Trending now"
+          subtitle="The pieces everyone’s loving this week"
           actionLabel="View all"
           actionTo={PATHS.products}
         />

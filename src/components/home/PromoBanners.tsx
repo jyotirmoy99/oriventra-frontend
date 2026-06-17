@@ -31,7 +31,7 @@ const BANNERS: Banner[] = [
     body: "Refresh your essentials with deals across every category.",
     cta: "Shop the sale",
     to: productsSearchPath(""),
-    gradient: "linear-gradient(135deg, #7C3AED 0%, #A855F7 100%)",
+    gradient: "linear-gradient(135deg, #4F46E5 0%, #0EA5E9 100%)",
   },
   {
     eyebrow: "Just landed",
@@ -39,7 +39,7 @@ const BANNERS: Banner[] = [
     body: "Be the first to explore our latest additions.",
     cta: "Explore new",
     to: PATHS.products,
-    gradient: "linear-gradient(135deg, #EC4899 0%, #F472B6 100%)",
+    gradient: "linear-gradient(135deg, #0F172A 0%, #334155 100%)",
   },
 ];
 
@@ -96,7 +96,7 @@ const PromoBanners = () => {
                     bgcolor: "#fff",
                     // Always-dark label so it stays readable on the white button
                     // in BOTH light and dark themes (don't use theme text color).
-                    color: "#1A1523",
+                    color: "#0F172A",
                     fontWeight: 700,
                     "&:hover": { bgcolor: "rgba(255,255,255,0.88)" },
                   }}

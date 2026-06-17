@@ -14,20 +14,26 @@ import { PATHS } from "../../routes/paths";
 // ---------------------------------------------------------------------------
 // HeroSection
 // ---------------------------------------------------------------------------
-// Two-column landing hero: copy + CTAs on the left, an animated abstract
-// visual on the right (md+). Soft brand-gradient backdrop, staggered entrance,
-// and gently floating glass chips for a modern, "cool" feel. Fully responsive
-// (the visual hides on small screens).
+// Split photographic hero (minimalist/editorial): copy + CTAs on the clean
+// canvas (left), a large lifestyle photo alongside (right) with a soft cool
+// brand glow and a floating "rating" glass chip. The photo stacks below the
+// copy on mobile. Staggered entrance for the copy; gentle scale-in for the art.
 // ---------------------------------------------------------------------------
+
+// Stable Unsplash CDN image (sized + format-optimized via query params).
+const HERO_IMAGE =
+  "https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=1100&q=80";
 
 const container: Variants = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
+  show: { transition: { staggerChildren: 0.1, delayChildren: 0.05 } },
 };
 const item: Variants = {
-  hidden: { opacity: 0, y: 20 },
+  hidden: { opacity: 0, y: 18 },
   show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
+
+const TRUST = ["Free shipping over $50", "Easy 30-day returns", "Secure checkout"];
 
 const HeroSection = () => {
   return (
@@ -35,105 +41,221 @@ const HeroSection = () => {
       sx={{
         position: "relative",
         overflow: "hidden",
+        bgcolor: "background.default",
+        borderBottom: (t) => `1px solid ${t.palette.divider}`,
+        // One subtle, cool brand glow — restrained, not colorful blobs.
         background: (t) =>
-          `radial-gradient(900px 500px at 15% 0%, ${alpha(t.palette.primary.main, 0.16)}, transparent 60%),
-           radial-gradient(700px 500px at 100% 20%, ${alpha(t.palette.secondary.main, 0.14)}, transparent 55%)`,
+          `radial-gradient(900px 480px at 85% -10%, ${alpha(t.palette.primary.main, 0.1)}, transparent 60%)`,
       }}
     >
-      <Container maxWidth="md" sx={{ py: { xs: 8, md: 14 } }}>
-        <Stack
-          component={motion.div}
-          variants={container}
-          initial="hidden"
-          animate="show"
-          spacing={3}
-          sx={{ alignItems: "center", textAlign: "center" }}
+      <Container maxWidth="lg" sx={{ py: { xs: 6, md: 12 } }}>
+        <Box
+          sx={{
+            display: "grid",
+            gridTemplateColumns: { xs: "1fr", md: "1.05fr 1fr" },
+            alignItems: "center",
+            gap: { xs: 5, md: 8 },
+          }}
         >
-          <motion.div variants={item}>
-            <Box
-              sx={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: 1,
-                px: 1.5,
-                py: 0.5,
-                borderRadius: 999,
-                bgcolor: (t) => alpha(t.palette.primary.main, 0.1),
-                color: "primary.main",
-                fontWeight: 700,
-                fontSize: 13,
-              }}
-            >
-              <StarRoundedIcon sx={{ fontSize: 16 }} />
-              New season, fresh finds
-            </Box>
-          </motion.div>
-
-          <motion.div variants={item}>
-            <Typography
-              variant="h1"
-              sx={{
-                fontSize: { xs: 40, sm: 58, md: 72 },
-                lineHeight: 1.05,
-                fontWeight: 800,
-              }}
-            >
-              Shop smarter with{" "}
+          {/* Copy */}
+          <Stack
+            component={motion.div}
+            variants={container}
+            initial="hidden"
+            animate="show"
+            spacing={3}
+            sx={{ alignItems: { xs: "center", md: "flex-start" }, textAlign: { xs: "center", md: "left" } }}
+          >
+            <motion.div variants={item}>
               <Box
-                component="span"
                 sx={{
-                  background: brandGradient,
-                  backgroundClip: "text",
-                  WebkitBackgroundClip: "text",
-                  color: "transparent",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 0.75,
+                  px: 1.75,
+                  py: 0.5,
+                  borderRadius: 999,
+                  border: (t) => `1px solid ${alpha(t.palette.primary.main, 0.25)}`,
+                  bgcolor: (t) => alpha(t.palette.primary.main, 0.06),
+                  color: "primary.main",
+                  fontWeight: 600,
+                  fontSize: 13,
+                  letterSpacing: 0.2,
                 }}
               >
-                Oriventra
+                <StarRoundedIcon sx={{ fontSize: 15 }} />
+                New season · fresh finds
               </Box>
-            </Typography>
-          </motion.div>
+            </motion.div>
 
-          <motion.div variants={item}>
-            <Typography
-              variant="h6"
+            <motion.div variants={item}>
+              <Typography
+                variant="h1"
+                sx={{
+                  fontSize: { xs: 40, sm: 54, md: 64 },
+                  lineHeight: 1.05,
+                  fontWeight: 800,
+                  letterSpacing: "-0.03em",
+                }}
+              >
+                Everyday essentials,{" "}
+                <Box
+                  component="span"
+                  sx={{
+                    background: brandGradient,
+                    backgroundClip: "text",
+                    WebkitBackgroundClip: "text",
+                    color: "transparent",
+                  }}
+                >
+                  beautifully curated
+                </Box>
+              </Typography>
+            </motion.div>
+
+            <motion.div variants={item}>
+              <Typography
+                sx={{
+                  color: "text.secondary",
+                  fontWeight: 400,
+                  fontSize: { xs: 16, md: 18 },
+                  maxWidth: 520,
+                  lineHeight: 1.6,
+                }}
+              >
+                A considered edit of products at honest prices — from the things
+                you reach for daily to the pieces worth the wait.
+              </Typography>
+            </motion.div>
+
+            <motion.div variants={item}>
+              <Stack
+                direction={{ xs: "column", sm: "row" }}
+                spacing={1.5}
+                sx={{ pt: 0.5 }}
+              >
+                <Button
+                  component={RouterLink}
+                  to={PATHS.products}
+                  variant="contained"
+                  size="large"
+                  endIcon={<ArrowForwardRoundedIcon />}
+                  sx={{ px: 3.5 }}
+                >
+                  Shop now
+                </Button>
+                <Button
+                  component={RouterLink}
+                  to={PATHS.products}
+                  variant="outlined"
+                  size="large"
+                  color="inherit"
+                  sx={{ px: 3.5, borderColor: "divider" }}
+                >
+                  Browse categories
+                </Button>
+              </Stack>
+            </motion.div>
+
+            <motion.div variants={item}>
+              <Stack
+                direction="row"
+                spacing={2}
+                sx={{
+                  flexWrap: "wrap",
+                  justifyContent: { xs: "center", md: "flex-start" },
+                  rowGap: 0.5,
+                  color: "text.secondary",
+                  fontSize: 13,
+                }}
+              >
+                {TRUST.map((t, i) => (
+                  <Box key={t} sx={{ display: "inline-flex", alignItems: "center", gap: 2 }}>
+                    {i > 0 && (
+                      <Box
+                        component="span"
+                        sx={{ width: 3, height: 3, borderRadius: "50%", bgcolor: "text.disabled" }}
+                      />
+                    )}
+                    <Box component="span">{t}</Box>
+                  </Box>
+                ))}
+              </Stack>
+            </motion.div>
+          </Stack>
+
+          {/* Photo */}
+          <Box
+            component={motion.div}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, ease: "easeOut", delay: 0.15 }}
+            sx={{ position: "relative", order: { xs: -1, md: 0 } }}
+          >
+            {/* Soft brand glow offset behind the photo */}
+            <Box
+              aria-hidden
               sx={{
-                color: "text.secondary",
-                fontWeight: 400,
-                maxWidth: 620,
-                mx: "auto",
+                position: "absolute",
+                inset: 0,
+                transform: "translate(18px, 18px)",
+                borderRadius: 6,
+                background: brandGradient,
+                opacity: 0.18,
+                filter: "blur(8px)",
+                display: { xs: "none", md: "block" },
+              }}
+            />
+            <Box
+              sx={{
+                position: "relative",
+                borderRadius: 6,
+                overflow: "hidden",
+                border: (t) => `1px solid ${t.palette.divider}`,
+                boxShadow: (t) => `0 30px 60px -30px ${alpha(t.palette.common.black, 0.45)}`,
+                aspectRatio: { xs: "16 / 11", md: "4 / 5" },
+                bgcolor: "action.hover",
               }}
             >
-              Discover thoughtfully selected products at honest prices — from
-              everyday essentials to standout finds, delivered to your door.
-            </Typography>
-          </motion.div>
+              <Box
+                component="img"
+                src={HERO_IMAGE}
+                alt="Curated seasonal fashion and lifestyle products"
+                loading="eager"
+                sx={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }}
+              />
 
-          <motion.div variants={item}>
-            <Stack
-              direction={{ xs: "column", sm: "row" }}
-              spacing={2}
-              sx={{ pt: 1, justifyContent: "center" }}
-            >
-              <Button
-                component={RouterLink}
-                to={PATHS.products}
-                variant="contained"
-                size="large"
-                endIcon={<ArrowForwardRoundedIcon />}
+              {/* Floating glass rating chip */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  left: 16,
+                  bottom: 16,
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 1,
+                  px: 1.5,
+                  py: 0.75,
+                  borderRadius: 3,
+                  bgcolor: (t) => alpha(t.palette.background.paper, 0.85),
+                  backdropFilter: "blur(8px)",
+                  border: (t) => `1px solid ${alpha(t.palette.common.white, 0.4)}`,
+                  boxShadow: (t) => `0 10px 24px -12px ${alpha(t.palette.common.black, 0.5)}`,
+                }}
               >
-                Shop now
-              </Button>
-              <Button
-                component={RouterLink}
-                to={PATHS.products}
-                variant="outlined"
-                size="large"
-              >
-                Explore categories
-              </Button>
-            </Stack>
-          </motion.div>
-        </Stack>
+                <StarRoundedIcon sx={{ fontSize: 18, color: "warning.main" }} />
+                <Box sx={{ lineHeight: 1.1 }}>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 800 }}>
+                    4.9 / 5
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary">
+                    12k+ happy customers
+                  </Typography>
+                </Box>
+              </Box>
+            </Box>
+          </Box>
+        </Box>
       </Container>
     </Box>
   );

@@ -22,13 +22,13 @@ export function createAppTheme(mode: ThemeMode): Theme {
         main: t.primary,
         light: t.primaryLight,
         dark: t.primaryDark,
-        contrastText: "#FFFFFF",
+        contrastText: t.primaryContrast,
       },
       secondary: {
         main: t.secondary,
         light: t.secondaryLight,
         dark: t.secondaryDark,
-        contrastText: "#FFFFFF",
+        contrastText: t.secondaryContrast,
       },
       background: {
         default: t.background,

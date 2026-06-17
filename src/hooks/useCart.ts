@@ -128,10 +128,19 @@ export function useCart() {
     [isAuthenticated, addMutation, dispatch, notify],
   );
 
+  // Returns a promise that settles only once the cart is updated, so callers
+  // (CartItemRow's useOptimistic transition) can keep the optimistic quantity
+  // pinned until the server's recomputed cart lands — no revert-then-reapply
+  // flicker. The mutation's onError already surfaces the message, so we swallow
+  // the rejection here to avoid an unhandled promise rejection in the transition.
   const updateQuantity = useCallback(
-    (line: CartLine, quantity: number) => {
+    async (line: CartLine, quantity: number): Promise<void> => {
       if (isAuthenticated) {
-        updateMutation.mutate({ itemId: line.itemId, quantity });
+        try {
+          await updateMutation.mutateAsync({ itemId: line.itemId, quantity });
+        } catch {
+          /* error already surfaced via the mutation's onError */
+        }
       } else {
         dispatch(
           setGuestItemQuantity({

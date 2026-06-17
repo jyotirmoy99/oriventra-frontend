@@ -28,6 +28,7 @@ export const PATHS = {
   // Admin
   admin: "/admin",
   adminProducts: "/admin/products",
+  adminCategories: "/admin/categories",
   adminOrders: "/admin/orders",
   adminUsers: "/admin/users",
 } as const;

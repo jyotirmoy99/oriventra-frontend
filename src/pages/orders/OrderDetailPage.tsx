@@ -22,6 +22,7 @@ import { useSnackbar } from "../../hooks/useSnackbar";
 import * as paymentService from "../../services/payment.service";
 import { redirectToCheckout } from "../../lib/stripe";
 import { getErrorMessage } from "../../utils/getErrorMessage";
+import { formatCurrency } from "../../utils/formatCurrency";
 import OrderStatusTimeline from "../../components/order/OrderStatusTimeline";
 import OrderItems from "../../components/order/OrderItems";
 import OrderTotals from "../../components/order/OrderTotals";
@@ -74,13 +75,20 @@ const OrderDetailPage = () => {
     order.paymentStatus === "pending" &&
     order.status !== "cancelled";
 
+  const isPaid = order.paymentStatus === "paid";
+
   const handleCancel = () => {
     cancelOrder.mutate(
       { id: order._id, reason: reason.trim() || undefined },
       {
-        onSuccess: () => {
+        onSuccess: (updated) => {
           setCancelOpen(false);
-          notify("Order cancelled", "success");
+          notify(
+            updated.paymentStatus === "refunded"
+              ? "Order cancelled — a refund has been issued to your original payment method"
+              : "Order cancelled",
+            "success",
+          );
         },
         onError: (err) => notify(getErrorMessage(err), "error"),
       },
@@ -170,6 +178,13 @@ const OrderDetailPage = () => {
               {order.paymentMethod === "stripe" ? "Card (Stripe)" : "Cash on Delivery"}
             </Typography>
 
+            {order.paymentStatus === "refunded" && (
+              <Alert severity="success" sx={{ mb: 2 }}>
+                {formatCurrency(order.totalAmount)} was refunded to your original
+                payment method. It may take 5–10 business days to appear.
+              </Alert>
+            )}
+
             <Typography variant="subtitle2" sx={{ fontWeight: 700, mb: 0.5 }}>
               Shipping to
             </Typography>
@@ -207,7 +222,11 @@ const OrderDetailPage = () => {
         <DialogTitle>Cancel this order?</DialogTitle>
         <DialogContent>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            This can’t be undone. Stock will be returned. Let us know why (optional):
+            This can’t be undone. Stock will be returned.{" "}
+            {isPaid
+              ? "Since this order is paid, your payment will be refunded to your original payment method."
+              : ""}{" "}
+            Let us know why (optional):
           </Typography>
           <TextField
             fullWidth

@@ -16,6 +16,7 @@ export const ProfilePage = lazy(() => import("../pages/ProfilePage"));
 // Admin
 export const DashboardPage = lazy(() => import("../pages/admin/DashboardPage"));
 export const AdminProductsPage = lazy(() => import("../pages/admin/AdminProductsPage"));
+export const AdminCategoriesPage = lazy(() => import("../pages/admin/AdminCategoriesPage"));
 export const AdminOrdersPage = lazy(() => import("../pages/admin/AdminOrdersPage"));
 export const AdminUsersPage = lazy(() => import("../pages/admin/AdminUsersPage"));
 

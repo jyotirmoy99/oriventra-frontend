@@ -1,4 +1,5 @@
 import HeroSection from "../components/home/HeroSection";
+import FeaturesStrip from "../components/home/FeaturesStrip";
 import CategoriesSection from "../components/home/CategoriesSection";
 import FeaturedProducts from "../components/home/FeaturedProducts";
 import PromoBanners from "../components/home/PromoBanners";
@@ -17,6 +18,7 @@ const HomePage = () => {
   return (
     <>
       <HeroSection />
+      <FeaturesStrip />
       <CategoriesSection />
       <FeaturedProducts />
       <PromoBanners />
